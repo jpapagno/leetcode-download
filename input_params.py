@@ -23,7 +23,7 @@ def manual_comma_split(some_input):
     return ret_list
 
 
-
+# def get_input_params(content):
 # Define the URL of the LeetCode problem
 url = 'https://leetcode.com/problems/zigzag-conversion/'
 
@@ -39,6 +39,7 @@ soup = BeautifulSoup(response.content, 'html.parser')
 
 # Find the content
 content = soup.find('div', class_='_1l1MA').get_text()
+print(content)
 
 # find input params
 example1 = content.find("Example 1:") if "Example 1:" in content else 0
@@ -97,4 +98,4 @@ for cur in new_input_params:
 
 for cur in newer_input_params:
     print(cur, type(cur))
-return newer_input_params
+print(newer_input_params)
