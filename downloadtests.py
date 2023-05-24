@@ -5,11 +5,6 @@ from bs4 import BeautifulSoup
 def download_desc(num, title):
     # title = 'two-sum'
     directory = 'downloads/desc'
-
-    # Create the directory if it doesn't exist
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-
     # File path
     file_path = os.path.join(directory, num + '-' + title + '.txt')
 
@@ -35,13 +30,9 @@ def download_desc(num, title):
     # File successfully written
     print(f"Content written to {file_path}.")
 
-def download_neetcode(num_title):
+def download_neetcode(num_title, directory):
     # num_title = '0001-two-sum.py'
-    directory = 'downloads/neetcode'
 
-    # Create the directory if it doesn't exist
-    if not os.path.exists(directory):
-        os.makedirs(directory)
     py_name = num_title + '.py'
     # File path
     file_path = os.path.join(directory, py_name)

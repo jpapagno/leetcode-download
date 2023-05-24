@@ -8,10 +8,33 @@ import mem
 #   - input: number
 #   - output: downloaded desc and neetcode ans
 
-# returns file name if present, else None
-def is_filename_in_downloads(folder, num):
-    directory = f'downloads/{folder}'
+
+def copy_neetcode(num):
+    # input is '0001'
     search_string = num
+    directory = 'downloads/neetcode'
+
+    # Iterate through all files in the directory
+    success = False
+    for filename in os.listdir(directory):
+        # Check if the search string is present in the file name
+        if search_string in filename:
+            with open(f'downloads/neetcode/{filename}') as f:
+                with open(f"mycode/{filename}", "w") as f1:
+                    for line in f:
+                        f1.write(line)
+                        if "def" in line:
+                            success = True
+                            break
+    if not success:
+        raise ValueError('not success bro, could not find def')
+
+
+# returns file name if present, else None
+def is_filename_in_downloads(directory, num):
+    search_string = num
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
     # Iterate through all files in the directory
     for filename in os.listdir(directory):
@@ -34,12 +57,18 @@ def download_num(input_val):
 
     # before we do any downloading, lets check to see if we already have the desc and neetcode ans downloaded
     # this will allow us to do the same commands whether we're online or offline
-    desc_title = is_filename_in_downloads("desc", input_val)
-    neet_title = is_filename_in_downloads("neetcode", input_val)
-    pickle_title = is_filename_in_downloads('pickles', input_val)
+    desc_title = is_filename_in_downloads("downloads/desc", input_val)
+    neet_title = is_filename_in_downloads("downloads/neetcode", input_val)
+    pickle_title = is_filename_in_downloads('downloads/pickles', input_val)
+    mycode_title = is_filename_in_downloads('mycode', input_val)
+
+    # case where we have no need to go online and download shit
     if desc_title and neet_title and pickle_title:
+        # case that the mycode py file is not present, we need to copy it from neetcode
+        if not mycode_title:
+            copy_neetcode(input_val)
         print(pickle_title)
-        print('desc and neet already downloaded, returning title')
+        print('desc and neet already downloaded, returning saved object')
         return mem.load_object(f'downloads/pickles/{pickle_title}')
     
     # Send a GET request to the desired URL
@@ -81,7 +110,10 @@ def download_num(input_val):
     # check if neetcode already exists for title, if not, download it
     # print(num_title)
     if not os.path.exists(f'downloads/neetcode/{num_title}.py'):
-        downloadtests.download_neetcode(num_title)
+        downloadtests.download_neetcode(num_title, 'downloads/neetcode')
+
+    if not mycode_title:
+        copy_neetcode(input_val)
 
     if not os.path.exists(f'downloads/pickles/{num_title}.pickle'):
         input_params.get_input_params(num_title)

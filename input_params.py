@@ -3,6 +3,32 @@ from bs4 import BeautifulSoup
 import os
 import model
 import mem
+import re
+
+def get_function_name(title):
+    directory = f'downloads/neetcode'
+    neet_title = f'{title}.py'
+    for filename in os.listdir(directory):
+        # Check if the search string is present in the file name
+        if neet_title == filename:
+            file_path = os.path.join(directory, filename)
+            with open(file_path, 'r') as file_obj:
+                content = file_obj.read()
+            break
+
+    # Define the pattern to search for
+    pattern = 'def'
+
+    # Search for the pattern in the response text using regex
+    matches = re.finditer(pattern, content)
+    for match in matches:
+        start_index = match.start()
+        end_index = match.end()
+
+    while content[end_index] != '(':
+        end_index += 1
+
+    return content[start_index+4:end_index]
 
 def correct_types(old_list):
     output_list = []
@@ -27,7 +53,6 @@ def correct_types(old_list):
         else:
             raise ValueError('found type I cannot convert', cur)
     return output_list
-
 
 def manual_comma_split(some_input):
     inside_list = False
@@ -78,8 +103,7 @@ def get_example_input(input_content):
 
 # this function takes in a title, and parses input and output data to return a model of the problem
 def get_input_params(title):
-    cur_problem = model.Problem(title)
-
+    cur_problem = model.Problem(title, get_function_name(title))
     # get contents of the title
     directory = f'downloads/desc'
     filename = f'{title}.txt'

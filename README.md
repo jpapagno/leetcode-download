@@ -1,6 +1,10 @@
 # leetcode-download
 Download leetcode problems to practice offline
 
+Right now this only supports leetcode problems that fit the following specs:
+- are in neetcode list
+- only use lists, strings, or ints as inputs
+- only python
 
 STEPS:
 1. Get already made basic tests from leetcode
@@ -32,3 +36,23 @@ todo:
 
     - create model to represent the thing that holds the parsed desc
     - model can have fields like 
+    - DONEEEEE
+
+3. Main
+    - when main is called for the first time, create a file that is exactly the solution in another foldert that the user will code in
+    - then main will call that file to test against your code
+    - This will allow the user to work on multiple problems at the same time
+    - This will also give the user the starting code for the problem
+        - the class and the function and any other boilerplate
+    - and we have a reset.py NUM that will reset the user's file to its og state, in case you accidently got rid of the function and input code
+    - DONEEEE
+
+4. todo still
+    - create random tests baised on inputs to really test the code
+    - implement a problem search feature
+        - this would run through neetcode's github thing that shows the user the possible problems the user can select
+    - implement a console promt thing and more clean terminal command
+        - imeplement a front end that allows user to click buttons to do the commands
+    
+    
+
