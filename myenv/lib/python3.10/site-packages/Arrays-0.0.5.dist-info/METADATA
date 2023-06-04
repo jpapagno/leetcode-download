@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: Arrays
+Version: 0.0.5
+Summary: Python library for storing and reading stored arrays.
+Home-page: https://github.com/S0FTY/Arrays
+Author: RedDog
+Author-email: bremo.lincolin101@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+
+Arrays is a project for storing arrays, and retrieving data from stored arrays.
+
+To store data, try this:
+```python
+from Arrays.arrays import Arrays
+
+array = Arrays([10,20,30])
+array.save_array("array.data")
+```
+
+To retrieve integers from stored array, use this:
+```python
+from Arrays.arrays import Arrays
+
+array = Arrays([])
+custom_array = array.convert_stored_to_array("array.data")
+
+```
+
+For any other type, use this:
+```python
+from Arrays.arrays import Arrays
+
+array = Arrays([])
+custom_array = array.convert_stored_to_array("array.data", _objects_type="int/str/float/tuple") 
+#_objects_type is the type the stored data is being converted to, and put into an array.
+#Say you want the arrays to be an integer, use int.
+
+```
+
