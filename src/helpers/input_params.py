@@ -1,34 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import os
-import src.model as model
-import src.mem as mem
+import src.model.problem_model as model
+from src.helpers import mem
 import re
-
-def get_function_name(title):
-    directory = f'src/downloads/neetcode'
-    neet_title = f'{title}.py'
-    for filename in os.listdir(directory):
-        # Check if the search string is present in the file name
-        if neet_title == filename:
-            file_path = os.path.join(directory, filename)
-            with open(file_path, 'r') as file_obj:
-                content = file_obj.read()
-            break
-
-    # Define the pattern to search for
-    pattern = 'def'
-
-    # Search for the pattern in the response text using regex
-    matches = re.finditer(pattern, content)
-    for match in matches:
-        start_index = match.start()
-        end_index = match.end()
-
-    while content[end_index] != '(':
-        end_index += 1
-
-    return content[start_index+4:end_index]
 
 def correct_types(old_list):
     output_list = []
@@ -100,36 +75,3 @@ def get_example_input(input_content):
     # string: else
     newer_input_params = correct_types(new_input_params)
     return newer_input_params
-
-# this function takes in a title, and parses input and output data to return a model of the problem
-def get_input_params(title):
-    cur_problem = model.Problem(title, get_function_name(title))
-    # get contents of the title
-    directory = f'src/downloads/desc'
-    filename = f'{title}.txt'
-    found_file = False
-    for file in os.listdir(directory):
-        if file == filename:
-            found_file = True
-            file_path = os.path.join(directory, file)
-            with open(file_path, 'r') as file_obj:
-                content = file_obj.read()
-            break
-    if not found_file:
-        raise ValueError(f'could not find file {filename} in dir {directory}')
-
-    # find input params
-    examples = []
-    for i in range(4):
-        cur_example = f"Example {i+1}:"
-        if cur_example in content: 
-            examples.append(content.find(cur_example))
-        
-    for i, cur in enumerate(examples):
-        if i+1 < len(examples):
-            example_content = content[cur:examples[i+1]]
-        else:
-            example_content = content[cur:len(content)]
-        cur_problem.base_inputs.append(get_example_input(example_content))
-
-    mem.save_object(cur_problem)
