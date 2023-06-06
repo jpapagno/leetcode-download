@@ -113,3 +113,28 @@ def create_download_dir():
     for directory in dirs:
         if not os.path.exists(directory):
             os.makedirs(directory)
+
+def run_function(list_of_inputs, title, function_name, isNeetcode):
+    # take in a single list of input, title, function_name, Boolean isNeetcode
+    # example: [[1,2,3], 5], 0001-Two-Sum, twoSum
+    # return the output of neetcode or mycode baised on true or false
+    # print(helper.run_function([[1,2,3,5,4], 7], '0001-two-sum', 'twoSum', False))
+    num_inputs = len(list_of_inputs)
+
+    if num_inputs > 3:
+        raise ValueError('over three inputs not suppported')
+
+    if isNeetcode:
+        module = importlib.import_module(f'downloads.neetcode.{title}')
+    else: 
+        module = importlib.import_module(f'mycode.{title}')
+        
+    function = getattr(module.Solution, function_name)
+
+    if num_inputs == 1:
+        ans = function(module.Solution, list_of_inputs[0])
+    elif num_inputs == 2:
+        ans = function(module.Solution, list_of_inputs[0], list_of_inputs[1])
+    else:
+        ans = function(module.Solution, list_of_inputs[0], list_of_inputs[1], list_of_inputs[2])
+    return ans
